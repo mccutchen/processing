@@ -108,3 +108,31 @@ class CurvePainter extends FudgePainter {
         endShape();
     }
 }
+
+class BezierPainter extends CurvePainter {
+    int numCoords = 4;
+    int targetDelta = 50;
+    
+    public BezierPainter() {
+        super();
+    }
+    
+    void update() {
+        x = reverse(x);
+        y = reverse(y);
+        for(int i = 1; i < numCoords; i++) {
+            x[i] = fudge(x[i - 1], targetDelta, 0, width);
+            y[i] = fudge(y[i - 1], targetDelta, 0, height);
+        }
+    }
+    
+    void paint() {
+        noFill();
+        beginShape();
+        vertex(x[0], y[0]);
+        for (int i = 1; i < numCoords; i++) {
+            bezierVertex(x[1], y[1], x[2], y[2], x[3], y[3]);
+        }
+        endShape();
+    }
+}
