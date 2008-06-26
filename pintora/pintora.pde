@@ -1,5 +1,15 @@
-int WIDTH = 4000;
-int HEIGHT = 2000;
+int WIDTH = 1500;
+int HEIGHT = 1000;
+
+int COLOR_DELTA = 3;
+int COLOR_MIN = 0;
+int COLOR_MAX = 255;
+
+int STROKE_DELTA = 2;
+int STROKE_MIN = 20;
+int STROKE_MAX = 100;
+
+int TARGET_DELTA = 25;
 
 int currentHour = hour();
 

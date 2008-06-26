@@ -1,16 +1,16 @@
 abstract class Painter {
-    int colorDelta = 5;
-    int colorMin = 0;
-    int colorMax = 255;
+    int colorDelta = COLOR_DELTA;
+    int colorMin = COLOR_MIN;
+    int colorMax = COLOR_MAX;
     int rDelta = rand(0, colorDelta);
     int gDelta = rand(0, colorDelta);
     int bDelta = rand(0, colorDelta);
     
-    int strokeDelta = 3;
-    int strokeMin = 20;
-    int strokeMax = 100;
+    int strokeDelta = STROKE_DELTA;
+    int strokeMin = STROKE_MIN;
+    int strokeMax = STROKE_MAX;
     
-    int targetDelta = 25;
+    int targetDelta = TARGET_DELTA;
     
     color c;
     int s;
