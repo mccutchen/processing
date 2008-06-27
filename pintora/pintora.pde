@@ -21,8 +21,8 @@ void setup() {
     background(color(255,255,255));
     
     Painter b = new CurvePainter();
-    b.c = color(190, 43, 7);
-    b.rDelta = 2;
+    b.c = color(68, 139, 26);
+    b.gDelta = 2;
     
     painters[0] = b;
 }
