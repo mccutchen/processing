@@ -35,15 +35,15 @@ abstract class FudgePainter extends Painter {
 }
 
 abstract class OneColorPainter extends FudgePainter {
+    color baseColor;
     OneColorPainter() {
         super();
-        int r = int(red(c));
-        int g = int(green(c));
-        int b = int(blue(c));
-        
-        if (r >= g && r >= b) rDelta = 0;
-        else if (g > r && g > b) gDelta = 0;
-        else bDelta = 0;
+        baseColor = c;
+        rDelta = gDelta = bDelta = COLOR_DELTA;
+    }
+    void update() {
+        super.update();
+        c = fudge(baseColor, rDelta, gDelta, bDelta, colorMin, colorMax);
     }
 }
 
@@ -72,7 +72,7 @@ class LinePainter extends FudgePainter {
     }
 }
 
-class CurvePainter extends FudgePainter {
+class CurvePainter extends OneColorPainter {
     int numCoords = 20;
     int[] x = new int[numCoords];
     int[] y = new int[numCoords];
