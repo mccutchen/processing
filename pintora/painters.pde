@@ -72,7 +72,7 @@ class LinePainter extends FudgePainter {
     }
 }
 
-class CurvePainter extends OneColorPainter {
+class CurvePainter extends FudgePainter {
     int numCoords = 20;
     int[] x = new int[numCoords];
     int[] y = new int[numCoords];

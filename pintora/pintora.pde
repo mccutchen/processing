@@ -1,7 +1,7 @@
 int WIDTH = 1400;
 int HEIGHT = 700;
 
-int COLOR_DELTA = 1;
+int COLOR_DELTA = 4;
 int COLOR_MIN = 0;
 int COLOR_MAX = 255;
 
@@ -20,11 +20,9 @@ void setup() {
     size(WIDTH, HEIGHT);
     background(color(255,255,255));
     
-    Painter b = new CurvePainter();
-    b.c = color(68, 139, 26);
-    b.gDelta = 2;
-    
-    painters[0] = b;
+    for (int i = 0; i < numPainters; i++) {
+        painters[i] = new CurvePainter();
+    }
 }
 
 void keyPressed() {
