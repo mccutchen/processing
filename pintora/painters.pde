@@ -47,6 +47,19 @@ abstract class OneColorPainter extends FudgePainter {
     }
 }
 
+abstract class GrayScalePainter extends FudgePainter {
+    int gray;
+    GrayScalePainter() {
+        super();
+        gray = rand(0, 255);
+    }
+    void update() {
+        super.update();
+        gray = fudge(gray, COLOR_DELTA, colorMin, colorMax);
+        c = color(gray);
+    }
+}
+
 class LinePainter extends FudgePainter {
     int x, y;
     int oldx, oldy;
@@ -72,7 +85,7 @@ class LinePainter extends FudgePainter {
     }
 }
 
-class CurvePainter extends FudgePainter {
+class CurvePainter extends GrayScalePainter {
     int numCoords = 20;
     int[] x = new int[numCoords];
     int[] y = new int[numCoords];
