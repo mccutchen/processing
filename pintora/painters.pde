@@ -108,8 +108,8 @@ class LinePainter extends FudgePainter {
     }
 }
 
-class CurvePainter extends GrayScalePainter {
-    int numCoords = 20;
+class CurvePainter extends FudgePainter {
+    int numCoords = 10;
     int[] x = new int[numCoords];
     int[] y = new int[numCoords];
     
