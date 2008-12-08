@@ -35,15 +35,38 @@ abstract class FudgePainter extends Painter {
 }
 
 abstract class OneColorPainter extends FudgePainter {
-    color baseColor;
+    int r, g, b;
+    int rmin, rmax;
+    int gmin, gmax;
+    int bmin, bmax;
+    int maxdelta = 6;
+    
     OneColorPainter() {
         super();
-        baseColor = c;
-        rDelta = gDelta = bDelta = COLOR_DELTA;
+        c = color(127, 148, 149);
+        r = int(red(c));
+        g = int(green(c));
+        b = int(blue(c));
+        rmin = getMin(r);
+        rmax = getMax(r);
+        gmin = getMin(g);
+        gmax = getMax(g);
+        bmin = getMin(b);
+        bmax = getMax(b);
     }
     void update() {
         super.update();
-        c = fudge(baseColor, rDelta, gDelta, bDelta, colorMin, colorMax);
+        r = fudge(r, colorDelta, rmin, rmax);
+        g = fudge(g, colorDelta, gmin, gmax);
+        b = fudge(b, colorDelta, bmin, bmax);
+        c = color(r, g, b);
+    }
+    
+    int getMin(int channel) {
+        return max(channel - maxdelta, 0);
+    }
+    int getMax(int channel) {
+        return min(channel + maxdelta, 255);
     }
 }
 
