@@ -19,9 +19,10 @@ Painter[] painters = new Painter[numPainters];
 void setup() {
     size(WIDTH, HEIGHT);
     background(color(255,255,255));
+    smooth();
     
     for (int i = 0; i < numPainters; i++) {
-        painters[i] = new CurvePainter();
+        painters[i] = new CurvePainter(new ColorStream());
     }
 }
 

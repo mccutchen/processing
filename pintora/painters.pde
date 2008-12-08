@@ -1,94 +1,34 @@
 abstract class Painter {
-    int colorDelta = COLOR_DELTA;
-    int colorMin = COLOR_MIN;
-    int colorMax = COLOR_MAX;
-    int rDelta = rand(0, colorDelta);
-    int gDelta = rand(0, colorDelta);
-    int bDelta = rand(0, colorDelta);
-    
     int strokeDelta = STROKE_DELTA;
     int strokeMin = STROKE_MIN;
     int strokeMax = STROKE_MAX;
     
     int targetDelta = TARGET_DELTA;
     
-    color c;
+    ColorStream cs;
     int s;
     
-    Painter() {
-        c = color(rand(0,255), rand(0,255), rand(0,255));
+    Painter(ColorStream colorStream) {
+        cs = colorStream;
         s = rand(strokeMin, strokeMax);
     }
     
-    abstract void update();
+    void update() {
+        s = fudge(s, strokeDelta, strokeMin, strokeMax);
+        strokeWeight(s);
+        stroke(cs.next());
+        noFill();
+    }
+    
     abstract void paint();
 }
 
-abstract class FudgePainter extends Painter {
-    FudgePainter() {
-        super();
-    }
-    void update() {
-        c = fudge(c, rDelta, gDelta, bDelta, colorMin, colorMax);
-        s = fudge(s, strokeDelta, strokeMin, strokeMax);
-    }
-}
-
-abstract class OneColorPainter extends FudgePainter {
-    int r, g, b;
-    int rmin, rmax;
-    int gmin, gmax;
-    int bmin, bmax;
-    int maxdelta = 6;
-    
-    OneColorPainter() {
-        super();
-        c = color(127, 148, 149);
-        r = int(red(c));
-        g = int(green(c));
-        b = int(blue(c));
-        rmin = getMin(r);
-        rmax = getMax(r);
-        gmin = getMin(g);
-        gmax = getMax(g);
-        bmin = getMin(b);
-        bmax = getMax(b);
-    }
-    void update() {
-        super.update();
-        r = fudge(r, colorDelta, rmin, rmax);
-        g = fudge(g, colorDelta, gmin, gmax);
-        b = fudge(b, colorDelta, bmin, bmax);
-        c = color(r, g, b);
-    }
-    
-    int getMin(int channel) {
-        return max(channel - maxdelta, 0);
-    }
-    int getMax(int channel) {
-        return min(channel + maxdelta, 255);
-    }
-}
-
-abstract class GrayScalePainter extends FudgePainter {
-    int gray;
-    GrayScalePainter() {
-        super();
-        gray = rand(0, 255);
-    }
-    void update() {
-        super.update();
-        gray = fudge(gray, COLOR_DELTA, colorMin, colorMax);
-        c = color(gray);
-    }
-}
-
-class LinePainter extends FudgePainter {
+class LinePainter extends Painter {
     int x, y;
     int oldx, oldy;
     
-    LinePainter() {
-        super();
+    LinePainter(ColorStream colorStream) {
+        super(colorStream);
         x = oldx = rand(0, width);
         y = oldy = rand(0, height);
     }
@@ -101,20 +41,17 @@ class LinePainter extends FudgePainter {
     }
     
     void paint() {
-        stroke(c);
-        strokeWeight(s);
-        noFill();
         line(oldx, oldy, x, y);
     }
 }
 
-class CurvePainter extends FudgePainter {
-    int numCoords = 10;
+class CurvePainter extends Painter {
+    int numCoords = 20;
     int[] x = new int[numCoords];
     int[] y = new int[numCoords];
     
-    public CurvePainter() {
-        super();
+    public CurvePainter(ColorStream colorStream) {
+        super(colorStream);
         int x1 = rand(0, width);
         int y1 = rand(0, height);
         for (int i = 0; i < numCoords; i++) {
@@ -134,9 +71,6 @@ class CurvePainter extends FudgePainter {
     }
     
     void paint() {
-        stroke(c);
-        strokeWeight(s);
-        noFill();
         beginShape();
         for (int i = 0; i < numCoords; i++) {
             curveVertex(x[i], y[i]);
@@ -149,11 +83,12 @@ class BezierPainter extends CurvePainter {
     int numCoords = 4;
     int targetDelta = 50;
     
-    public BezierPainter() {
-        super();
+    public BezierPainter(ColorStream colorStream) {
+        super(colorStream);
     }
-    
+        
     void update() {
+        super.update();
         x = reverse(x);
         y = reverse(y);
         for(int i = 1; i < numCoords; i++) {
@@ -163,7 +98,6 @@ class BezierPainter extends CurvePainter {
     }
     
     void paint() {
-        noFill();
         beginShape();
         vertex(x[0], y[0]);
         for (int i = 1; i < numCoords; i++) {
