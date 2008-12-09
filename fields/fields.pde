@@ -1,13 +1,9 @@
-int cols = 50;
-int rows = 50;
+// Assumes equal height and width
+int gridsize = 50;
+float[] grid = new float[gridsize * gridsize];
 
-float[] circles = new float[cols * rows];
-
-int fieldWidth;
-int fieldHeight;
-
-int offsetX;
-int offsetY;
+int cellsize;
+int offset;
 
 float t = 0f;
 float tdelta = 0.01;
@@ -17,15 +13,12 @@ void setup() {
     background(255, 255, 255);
     fill(53, 53, 53);
     
-    fieldWidth = width / cols;
-    fieldHeight = height / rows;
-    offsetX = fieldWidth / 2;
-    offsetY = fieldHeight / 2;
+    cellsize = width / gridsize;
+    offset = cellsize / 2;
     
-    for (int i = 0; i < circles.length; i++) {
-        circles[i] = noise(i);
+    for (int i = 0; i < grid.length; i++) {
+        grid[i] = noise(i);
     }
-    print(circles);
 }
 
 void draw()  {
@@ -35,23 +28,23 @@ void draw()  {
     // Update the time (for the Perlin noise generator)
     t += tdelta;
     
-    for (int i = 0; i < cols; i++) {
-        for (int j = 0; j < rows; j++) {
+    for (int i = 0; i < gridsize; i++) {
+        for (int j = 0; j < gridsize; j++) {
             // origin
-            int x = i * fieldWidth + offsetX;
-            int y = j * fieldHeight + offsetY;
+            int x = i * cellsize + offset;
+            int y = j * cellsize + offset;
             
             // The index of the current field in the array
-            int index = i * cols + j;
+            int index = i * gridsize + j;
             
             // Calculate some noise and turn it into an angle in radians
-            float n = noise(circles[index] + t);
+            float n = noise(grid[index] + t);
             float theta = n * PI * 4;
             
             // Calculate the coords for the other end of the line segment
             // http://www.processing.org/learning/tutorials/trig/
-            float xd = cos(theta) * offsetX;
-            float yd = sin(theta) * offsetY;
+            float xd = cos(theta) * offset;
+            float yd = sin(theta) * offset;
             
             // Draw the line
             line(x, y, x+xd, y+yd);
