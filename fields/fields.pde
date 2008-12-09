@@ -41,10 +41,14 @@ void draw()  {
             float n = noise(grid[index] + t);
             float theta = n * PI * 4;
             
+            // Calculate the length of the field line based on the difference
+            // between its current angle and its previous angle
+            float r = offset / 2;
+            
             // Calculate the coords for the other end of the line segment
             // http://www.processing.org/learning/tutorials/trig/
-            float xd = cos(theta) * offset / 2;
-            float yd = sin(theta) * offset / 2;
+            float xd = cos(theta) * r;
+            float yd = sin(theta) * r;
             
             // Draw the line
             line(x, y, x+xd, y+yd);
