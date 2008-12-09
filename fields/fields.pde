@@ -1,5 +1,5 @@
 // Assumes equal height and width
-int gridsize = 50;
+int gridsize = 25;
 float[] grid = new float[gridsize * gridsize];
 
 int cellsize;
@@ -43,8 +43,8 @@ void draw()  {
             
             // Calculate the coords for the other end of the line segment
             // http://www.processing.org/learning/tutorials/trig/
-            float xd = cos(theta) * offset;
-            float yd = sin(theta) * offset;
+            float xd = cos(theta) * offset / 2;
+            float yd = sin(theta) * offset / 2;
             
             // Draw the line
             line(x, y, x+xd, y+yd);
