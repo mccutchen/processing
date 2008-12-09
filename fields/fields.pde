@@ -1,5 +1,5 @@
-int cols = 5;
-int rows = 5;
+int cols = 10;
+int rows = 10;
 
 float[] circles = new float[cols * rows];
 
@@ -8,6 +8,9 @@ int fieldHeight;
 
 int offsetX;
 int offsetY;
+
+float t = 0f;
+float tdelta = 0.01;
 
 void setup() {
     size(500, 500);
@@ -27,10 +30,14 @@ void setup() {
 }
 
 void draw()  {
+    t += tdelta;
     for (int i = 0; i < cols; i++) {
         for (int j = 0; j < rows; j++) {
             int x = i * fieldWidth + offsetX;
             int y = j * fieldHeight + offsetY;
+            float n = noise(x + t, y + t);
+            float g = n * 255;
+            fill(g, g, g);
             ellipse(x, y, fieldWidth, fieldHeight);
         }
     }
